@@ -474,10 +474,14 @@ function x407(userConfig = {}) {
       rateLimit: result.rateLimit,
     };
 
+    // ---- Welcome mat: the agent sees itself in the response ----
+    res.set("X-Agent-Welcome", "origin-verified");
     res.set("X-Agent-Trust-Grade", String(result.grade));
     res.set("X-Agent-Trust-Score", String(result.score));
     res.set("X-Agent-Trust-Tier", result.tier);
     res.set("X-Agent-Trust-TokenId", String(result.tokenId));
+    res.set("X-Agent-Fee-Tier", result.access === "full" ? "preferred" : "standard");
+    res.set("X-Agent-Priority", result.score >= 90 ? "high" : result.score >= 70 ? "normal" : "low");
 
     next();
   };
